@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy New Year Surprise</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Poppins, Arial;
+  background:linear-gradient(140deg,#060021,#2a007a);
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center;
+  min-height:100vh;
+  color:white;
+  overflow-x:hidden;
+}
+
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:10px 16px 30px;
+}
+
+.banner{
+  background:linear-gradient(90deg,#ffba00,#ff0066);
+  padding:14px;
+  text-align:center;
+  font-weight:700;
+  color:#000;
+}
+
+.ribbon{
+  position:fixed;
+  top:25px;
+  right:-60px;
+  background:#ff0066;
+  color:white;
+  padding:10px 70px;
+  font-weight:700;
+  transform:rotate(35deg);
+  box-shadow:0 12px 40px rgba(0,0,0,.6);
+  z-index:3;
+}
+
+.header{
+  text-align:center;
+  padding:28px 16px 10px;
+}
+
+.card{
+  max-width:600px;
+  margin:14px auto 26px;
+  background:#0d0d1f;
+  padding:22px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 25px 70px rgba(0,0,0,.7);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  margin:14px 0;
+}
+
+button{
+  padding:14px;
+  width:100%;
+  border:none;
+  border-radius:14px;
+  font-weight:800;
+  background:#ffd000;
+  color:#000;
+  cursor:pointer;
+  transition:.25s;
+}
+button:hover{transform:scale(1.05)}
+
+#surprise{display:none;margin-top:14px}
+
+.surprise-box{
+  margin-top:10px;
+  background:#0f1030;
+  border-radius:20px;
+  padding:18px;
+  animation:pop .9s ease forwards;
+  opacity:0;
+}
+@keyframes pop{
+ from{transform:scale(.7);opacity:0}
+ to{transform:scale(1);opacity:1}
+}
+
+#message{
+  font-size:20px;
+  line-height:1.6;
+}
+
+/* video card */
+.video-card{
+  margin-top:18px;
+  background:#12123d;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+  animation:slide .8s ease forwards;
+  opacity:0;
+}
+@keyframes slide{
+ from{transform:translateY(40px);opacity:0}
+ to{transform:translateY(0);opacity:1}
+}
+
+iframe{
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:14px;
+  border:none;
+}
+
+/* balloons */
+.balloon{
+  position:fixed;
+  bottom:-120px;
+  width:65px;
+  height:85px;
+  border-radius:50%;
+  animation:floatUp 6s linear forwards;
+  box-shadow:inset -8px -18px 0 rgba(0,0,0,.25);
+  z-index:1;
+}
+.balloon:after{
+  content:"";
+  position:absolute;
+  bottom:-16px;
+  left:50%;
+  width:2px;
+  height:30px;
+  background:#fff;
+}
+@keyframes floatUp{
+ to{transform:translateY(-110vh);opacity:.2}
+}
+
+/* confetti */
+.confetti{
+  position:fixed;
+  width:10px;
+  height:14px;
+  top:-20px;
+  border-radius:3px;
+  animation:fall 3.2s linear forwards;
+  z-index:2;
+}
+@keyframes fall{
+ to{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+
+@media(max-width:480px){
+ .header h1{font-size:24px}
+ .card{margin:10px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="banner">✨ HAPPY NEW YEAR SPECIAL SURPRISE ✨</div>
+<div class="ribbon">2026 🎉</div>
+
+<div class="container">
+
+  <div class="header">
+    <h1>🎇 Welcome to Your New Year Surprise</h1>
+    <p>Type your name & unlock the celebration</p>
+  </div>
+
+  <div class="card">
+    <input id="name" placeholder="Your Name..." />
+    <button onclick="start()">Open Surprise 🎁</button>
+
+    <div id="surprise">
+      <div class="surprise-box">
+        <div id="message"></div>
+
+        <div class="video-card">
+          <h3>🎥 A New Year Wish For You</h3>
+
+          <iframe
+            id="yt"
+            src=""
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+
+          <!-- 🔊 NEW BUTTON -->
+          <button id="soundBtn" onclick="enableSound()" style="margin-top:10px;background:#00ffb3">
+            🔊 Tap for Sound
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function start(){
+  const name = document.getElementById("name").value.trim();
+  if(!name){ alert("Please enter your name 😊"); return; }
+
+  document.getElementById("surprise").style.display="block";
+
+  document.getElementById("message").innerHTML =
+    `🎉 Happy New Year <strong style="color:#ffd000">${name}</strong>!<br>
+     🌟 May this year bring success, love and happiness for you.<br>
+     💖 Keep smiling — big things are waiting for you!`;
+
+  makeConfetti();
+  releaseBalloons();
+
+  const VIDEO_ID = "nsTxvqy7TYI";
+
+  // autoplay MUTED (required)
+  document.getElementById("yt").src =
+    `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&modestbranding=1&loop=1&playlist=${VIDEO_ID}`;
+}
+
+function enableSound(){
+  const VIDEO_ID = "nsTxvqy7TYI";
+
+  // reload same video UNMUTED
+  document.getElementById("yt").src =
+    `https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=0&controls=0&rel=0&playsinline=1&modestbranding=1&loop=1&playlist=${VIDEO_ID}`;
+
+  document.getElementById("soundBtn").style.display = "none";
+}
+
+function makeConfetti(){
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},90%,60%)`;
+    c.style.animationDelay=Math.random()*1.5+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3500);
+  }
+}
+
+function releaseBalloons(){
+  for(let i=0;i<10;i++){
+    const b=document.createElement("div");
+    b.className="balloon";
+    b.style.left=Math.random()*90+"vw";
+    b.style.background=`hsl(${Math.random()*360},80%,55%)`;
+    b.style.animationDelay=Math.random()*1.5+"s";
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),6000);
+  }
+}
+</script>
+
+</body>
+</html>
